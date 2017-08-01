@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>图书搜素意见</title>
+	<script src="../Ajax/common.js"></script>
+	<style>
+		ul{
+			list-style: none;
+			color:red;
+			font-family: 楷体;
+		};
+	</style>
+</head>
+<body>
+	<h1>图书搜素建议</h1>
+	<input type="text" id="inp1">
+	<ul id="suggest"></ul>
+	<script>
+	//版本一
+		// $('inp1').onkeyup=function(){
+		// 	var xhr=getXhr();
+		// 	var	kw=$('inp1').value;
+		// 	var url="book_search.php?kw="+kw;
+		// 	xhr.open('get',url,true);
+		// 	xhr.onreadystatechange=function(){
+		// 		if (xhr.readyState==4&&xhr.status==200) {
+		// 			$("suggest").innerHTML=xhr.responseText;
+		// 			console.log(xhr.responseText)
+		// 		}
+		// 	}
+		// 	xhr.send(null);
+		// }
+		
+		 
+		
+		// 版本二	
+		$('inp1').onkeyup=function(){
+			if (!($('inp1').value)) {
+				$('suggest').innerHTML="";
+				return;
+			}
+			var xhr=getXhr();
+			var	kw=$('inp1').value;
+			var url="book_search.php?kw="+kw;
+			xhr.open('get',url,true);
+			xhr.onreadystatechange=function(){
+				if (xhr.readyState==4&&xhr.status==200) {
+					//把接受的json格式转换成对象
+					var result=JSON.parse(xhr.responseText);
+					console.log(xhr.responseText)
+					var html="";
+					for(var i in result){
+						html+="<li>"+result[i].bname+"</li>";
+					}
+					$('suggest').innerHTML=html;
+				}
+			}
+			xhr.send(null);
+		}	
+	</script>
+</body>
+</html>
